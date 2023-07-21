@@ -1,0 +1,39 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: leshan
+  labels:
+    app: leshan
+spec:
+  containers:
+    - name: leshan
+      image: "ghcr.io/qwerty-iot/leshan-demo-server/leshan-demo-server:latest"
+      ports:
+        - containerPort: 8080
+          protocol: UDP
+        - containerPort: 5683
+          protocol: UDP
+        - containerPort: 5684
+          protocol: UDP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: leshan
+  labels:
+    app: leshan
+spec:
+  type: LoadBalancer
+  selector:
+    app: leshan
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+    - name: coap
+      protocol: UDP
+      port: 5683
+    - name: coaps
+      protocol: UDP
+      port: 5684
